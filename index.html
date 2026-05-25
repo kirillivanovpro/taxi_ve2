@@ -4,1891 +4,1093 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A2B Taxi — Новое такси для Даугавпилса</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-dark: #080b12;
-            --bg-card: rgba(16, 22, 36, 0.6);
-            --bg-card-solid: #101624;
-            --bg-card-hover: rgba(22, 30, 50, 0.8);
-            --text-primary: #ffffff;
-            --text-secondary: #9aa5b8;
-            --text-muted: #5a6270;
-            --accent-gold: #f5c518;
-            --accent-gold-light: #ffd700;
-            --accent-gold-dark: #c9a010;
-            --accent-navy: #0a1628;
-            --accent-navy-light: #1a2a4a;
-            --glass-border: rgba(245, 197, 24, 0.08);
-            --glass-bg: rgba(16, 22, 36, 0.4);
-            --gradient-gold: linear-gradient(135deg, #f5c518 0%, #ffd700 50%, #c9a010 100%);
-            --gradient-navy: linear-gradient(180deg, #080b12 0%, #0d1320 100%);
-            --gradient-radial: radial-gradient(ellipse at 50% 0%, rgba(245,197,24,0.12) 0%, transparent 60%);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #0a0e17;
+            color: #ffffff;
             line-height: 1.6;
-            overflow-x: hidden;
         }
 
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-dark);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--accent-gold-dark);
-            border-radius: 3px;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245,197,24,0.4); }
-            50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(245,197,24,0); }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-
-        @keyframes shimmer {
-            0% { background-position: -200% center; }
-            100% { background-position: 200% center; }
-        }
-
-        @keyframes glowRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes particleFloat {
-            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
-        }
-
-        @keyframes borderGlow {
-            0%, 100% { border-color: rgba(245,197,24,0.1); }
-            50% { border-color: rgba(245,197,24,0.3); }
-        }
-
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .animate-on-scroll.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .delay-1 { transition-delay: 0.15s; }
-        .delay-2 { transition-delay: 0.3s; }
-        .delay-3 { transition-delay: 0.45s; }
-        .delay-4 { transition-delay: 0.6s; }
-
-        /* Logo */
-        .logo-brand {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            text-decoration: none;
-            position: relative;
-        }
-
-        .logo-a2b {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            line-height: 1;
-            display: flex;
-            align-items: baseline;
-        }
-
-        .logo-a2b .char-a {
-            color: #e8edf5;
-            text-shadow: 0 0 30px rgba(232,237,245,0.2);
-        }
-
-        .logo-a2b .char-2 {
-            color: var(--accent-gold);
-            font-style: italic;
-            font-weight: 700;
-            transform: skewX(-8deg);
-            display: inline-block;
-            text-shadow: 0 0 30px rgba(245,197,24,0.4);
-            margin: 0 1px;
-        }
-
-        .logo-a2b .char-b {
-            color: #e8edf5;
-            text-shadow: 0 0 30px rgba(232,237,245,0.2);
-        }
-
-        .logo-taxi {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 0.65rem;
-            font-weight: 700;
-            letter-spacing: 0.35em;
-            color: #8a9ab0;
-            text-transform: uppercase;
-            margin-top: 2px;
-            margin-left: 2px;
-        }
-
-        .logo-swoosh {
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent 0%, var(--accent-gold) 40%, var(--accent-gold-light) 50%, var(--accent-gold) 60%, transparent 100%);
-            border-radius: 2px;
-            opacity: 0.6;
-        }
-
-        .logo-brand-large {
-            align-items: center;
-        }
-
-        .logo-brand-large .logo-a2b {
-            font-size: 4.5rem;
-        }
-
-        .logo-brand-large .logo-taxi {
-            font-size: 1.1rem;
-            letter-spacing: 0.4em;
-            margin-top: 6px;
-            color: var(--text-secondary);
-        }
-
-        .logo-brand-large .logo-swoosh {
-            height: 3px;
-            bottom: -4px;
-            opacity: 0.8;
-        }
-
-        .footer-logo-brand {
-            align-items: center;
-        }
-
-        .footer-logo-brand .logo-a2b {
-            font-size: 2.2rem;
-        }
-
-        .footer-logo-brand .logo-taxi {
-            font-size: 0.75rem;
-            letter-spacing: 0.3em;
-        }
-
-        /* Navigation */
+        /* ===== NAVIGATION ===== */
         .navbar {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            background: rgba(8, 11, 18, 0.7);
-            backdrop-filter: blur(24px) saturate(1.2);
-            border-bottom: 1px solid var(--glass-border);
+            top: 0; left: 0; right: 0;
+            background: rgba(10, 14, 23, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(245, 197, 24, 0.1);
             padding: 0 24px;
-            transition: all 0.4s ease;
+            z-index: 1000;
         }
-
-        .navbar.scrolled {
-            background: rgba(8, 11, 18, 0.95);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-        }
-
+        
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 72px;
+            height: 64px;
+        }
+
+        .logo {
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+        
+        .logo-top {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+        
+        .logo-top .a { color: #e8edf5; }
+        .logo-top .two { 
+            color: #f5c518; 
+            font-style: italic;
+            display: inline-block;
+            transform: skewX(-8deg);
+        }
+        .logo-top .b { color: #e8edf5; }
+        
+        .logo-bottom {
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: #8a9ab0;
+            margin-top: 2px;
         }
 
         .nav-links {
             display: flex;
-            gap: 36px;
+            gap: 32px;
             list-style: none;
         }
-
+        
         .nav-links a {
-            color: var(--text-secondary);
+            color: #9aa5b8;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
             font-size: 0.9rem;
-            transition: all 0.3s ease;
-            position: relative;
+            transition: color 0.3s;
         }
-
-        .nav-links a:hover {
-            color: var(--accent-gold);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -6px;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: var(--gradient-gold);
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-            border-radius: 1px;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
+        
+        .nav-links a:hover { color: #f5c518; }
 
         .nav-cta {
-            background: var(--gradient-gold);
-            color: var(--accent-navy);
-            padding: 10px 24px;
-            border-radius: 10px;
+            background: linear-gradient(135deg, #f5c518, #ffd700);
+            color: #0a1628;
+            padding: 10px 20px;
+            border-radius: 8px;
             font-weight: 800;
             font-size: 0.85rem;
             text-decoration: none;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(245,197,24,0.25);
-            position: relative;
-            overflow: hidden;
         }
 
-        .nav-cta::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .nav-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(245,197,24,0.4);
-        }
-
-        .nav-cta:hover::before {
-            left: 100%;
-        }
-
-        .mobile-menu-btn {
+        .mobile-btn {
             display: none;
             background: none;
             border: none;
-            color: var(--text-primary);
+            color: white;
             font-size: 1.5rem;
             cursor: pointer;
         }
 
-        /* Hero Section */
+        /* ===== HERO ===== */
         .hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            padding: 120px 24px 80px;
-            overflow: hidden;
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            text-align: center;
+            padding: 100px 24px 60px;
             background: 
                 radial-gradient(ellipse at 30% 20%, rgba(245,197,24,0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 80%, rgba(10,22,40,0.3) 0%, transparent 50%),
-                linear-gradient(180deg, var(--bg-dark) 0%, #0a0f18 50%, var(--bg-dark) 100%);
-            z-index: 0;
-        }
-
-        .hero-city-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('https://kimi-web-img.moonshot.cn/img/www.daugavpils.lv/439e25510e1c86c2309bef9f0d0b3ba3ee456234.jpg') center/cover;
-            opacity: 0.1;
-            filter: brightness(0.25) contrast(1.3) saturate(0.6);
-            z-index: 1;
-        }
-
-        .hero-grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                linear-gradient(rgba(245,197,24,0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(245,197,24,0.02) 1px, transparent 1px);
-            background-size: 80px 80px;
-            mask-image: radial-gradient(ellipse at 50% 50%, black 0%, transparent 70%);
-            z-index: 1;
-        }
-
-        .hero-particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            overflow: hidden;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: var(--accent-gold);
-            border-radius: 50%;
-            opacity: 0;
-            animation: particleFloat 15s infinite;
-        }
-
-        .glow-orb {
-            position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 0;
-            filter: blur(80px);
-        }
-
-        .glow-orb-1 {
-            width: 500px;
-            height: 500px;
-            top: -10%;
-            right: -10%;
-            background: radial-gradient(circle, rgba(245,197,24,0.08) 0%, transparent 70%);
-        }
-
-        .glow-orb-2 {
-            width: 400px;
-            height: 400px;
-            bottom: 10%;
-            left: -10%;
-            background: radial-gradient(circle, rgba(10,22,40,0.15) 0%, transparent 70%);
-        }
-
-        .hero-content {
+                #0a0e17;
             position: relative;
-            z-index: 2;
-            max-width: 900px;
-            text-align: center;
-            animation: fadeInUp 1.2s ease-out;
         }
 
-        .hero-logo-large {
-            margin-bottom: 40px;
-            animation: fadeIn 1.5s ease-out;
-            display: inline-block;
-        }
+        .hero-content { max-width: 800px; }
 
-        .hero-badge {
+        .hero-logo {
+            margin-bottom: 32px;
+        }
+        
+        .hero-logo .logo-top { font-size: 4rem; }
+        .hero-logo .logo-bottom { font-size: 1rem; letter-spacing: 6px; }
+
+        .badge {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            background: rgba(245,197,24,0.08);
+            gap: 8px;
+            background: rgba(245,197,24,0.1);
             border: 1px solid rgba(245,197,24,0.2);
-            padding: 10px 24px;
+            padding: 8px 20px;
             border-radius: 50px;
             font-size: 0.85rem;
-            color: var(--accent-gold);
-            font-weight: 600;
-            margin-bottom: 32px;
-            animation: fadeIn 1.8s ease-out;
-            backdrop-filter: blur(10px);
+            color: #f5c518;
+            font-weight: 700;
+            margin-bottom: 24px;
         }
-
-        .hero-badge span {
-            width: 8px;
-            height: 8px;
-            background: var(--accent-gold);
+        
+        .badge-dot {
+            width: 8px; height: 8px;
+            background: #f5c518;
             border-radius: 50%;
-            animation: pulse 2s infinite;
+            animation: blink 2s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
         .hero h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            font-weight: 800;
-            line-height: 1.05;
-            margin-bottom: 28px;
-            letter-spacing: -0.03em;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
         }
-
-        .hero h1 .highlight {
-            background: var(--gradient-gold);
+        
+        .hero h1 span {
+            background: linear-gradient(135deg, #f5c518, #ffd700);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            position: relative;
         }
 
-        .hero-subtitle {
-            font-size: clamp(1rem, 2.5vw, 1.25rem);
-            color: var(--text-secondary);
-            max-width: 680px;
-            margin: 0 auto 48px;
-            line-height: 1.7;
+        .hero p {
+            color: #9aa5b8;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 32px;
+            line-height: 1.6;
         }
 
-        .hero-buttons {
+        .hero-btns {
             display: flex;
-            gap: 16px;
+            gap: 12px;
             justify-content: center;
             flex-wrap: wrap;
-            margin-bottom: 64px;
+            margin-bottom: 48px;
         }
 
         .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 16px 32px;
-            border-radius: 12px;
+            padding: 14px 28px;
+            border-radius: 10px;
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 0.95rem;
             text-decoration: none;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
+            display: inline-block;
+            transition: all 0.3s;
             border: none;
-            position: relative;
-            overflow: hidden;
+            cursor: pointer;
         }
 
-        .btn-primary {
-            background: var(--gradient-gold);
-            color: var(--accent-navy);
-            box-shadow: 0 4px 25px rgba(245,197,24,0.3);
+        .btn-gold {
+            background: linear-gradient(135deg, #f5c518, #ffd700);
+            color: #0a1628;
+            box-shadow: 0 4px 20px rgba(245,197,24,0.3);
+        }
+        
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(245,197,24,0.4);
         }
 
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.6s ease;
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 1.5px solid rgba(255,255,255,0.15);
+        }
+        
+        .btn-outline:hover {
+            border-color: #f5c518;
+            color: #f5c518;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 12px 40px rgba(245,197,24,0.4);
-        }
-
-        .btn-primary:hover::before {
-            left: 100%;
-        }
-
-        .btn-secondary {
-            background: rgba(255,255,255,0.03);
-            color: var(--text-primary);
-            border: 1.5px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--accent-gold);
-            color: var(--accent-gold);
-            background: rgba(245,197,24,0.05);
-            transform: translateY(-3px);
-        }
-
-        .hero-stats {
+        .stats {
             display: flex;
+            gap: 48px;
             justify-content: center;
-            gap: 56px;
             flex-wrap: wrap;
-            animation: fadeInUp 1.4s ease-out 0.4s both;
         }
-
-        .stat-item {
-            text-align: center;
-            position: relative;
-            padding: 0 16px;
+        
+        .stat h3 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #f5c518;
         }
-
-        .stat-item:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            right: -28px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 1px;
-            height: 50px;
-            background: linear-gradient(transparent, var(--accent-gold-dark), transparent);
-            opacity: 0.3;
-        }
-
-        .stat-number {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--accent-gold);
-            line-height: 1;
-            text-shadow: 0 0 40px rgba(245,197,24,0.25);
-        }
-
-        .stat-label {
+        
+        .stat p {
             font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 10px;
+            color: #5a6270;
             text-transform: uppercase;
-            letter-spacing: 0.12em;
-            font-weight: 600;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-top: 4px;
         }
 
-        /* Section divider */
-        .section-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent 0%, rgba(245,197,24,0.15) 50%, transparent 100%);
-            margin: 0 auto;
-            max-width: 800px;
-        }
-
-        /* Section Styles */
+        /* ===== SECTIONS ===== */
         .section {
-            padding: 120px 24px;
-            position: relative;
-        }
-
-        .section-alt {
-            background: var(--gradient-radial);
-        }
-
-        .container {
+            padding: 80px 24px;
             max-width: 1200px;
             margin: 0 auto;
+        }
+        
+        .section-gray {
+            background: #0d1320;
         }
 
         .section-header {
             text-align: center;
-            max-width: 700px;
-            margin: 0 auto 72px;
+            margin-bottom: 48px;
         }
-
+        
         .section-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--accent-gold);
-            font-weight: 700;
+            color: #f5c518;
             font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            margin-bottom: 20px;
-        }
-
-        .section-label::before,
-        .section-label::after {
-            content: '';
-            width: 24px;
-            height: 1px;
-            background: var(--accent-gold);
-            opacity: 0.4;
-        }
-
-        .section-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2.2rem, 4.5vw, 3.2rem);
             font-weight: 800;
-            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+            display: block;
+        }
+        
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 900;
+            margin-bottom: 16px;
             line-height: 1.15;
-            letter-spacing: -0.02em;
         }
-
+        
         .section-subtitle {
-            color: var(--text-secondary);
-            font-size: 1.15rem;
-            line-height: 1.7;
+            color: #9aa5b8;
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        /* Features Grid */
-        .features-grid {
+        /* ===== CARDS ===== */
+        .cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
         }
 
-        .feature-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 40px 32px;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--gradient-gold);
-            transform: scaleX(0);
-            transition: transform 0.5s ease;
-            border-radius: 20px 20px 0 0;
-        }
-
-        .feature-card::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(245,197,24,0.03) 0%, transparent 70%);
-            transition: all 0.5s ease;
-        }
-
-        .feature-card:hover {
-            border-color: rgba(245,197,24,0.2);
-            transform: translateY(-8px);
-            background: var(--bg-card-hover);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(245,197,24,0.1);
-        }
-
-        .feature-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .feature-card:hover::after {
-            top: -30%;
-            right: -30%;
-        }
-
-        .feature-icon {
-            width: 56px;
-            height: 56px;
-            background: rgba(245,197,24,0.08);
+        .card {
+            background: rgba(16, 22, 36, 0.6);
+            border: 1px solid rgba(245, 197, 24, 0.08);
             border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s;
+        }
+        
+        .card:hover {
+            border-color: rgba(245, 197, 24, 0.2);
+            transform: translateY(-4px);
+            background: rgba(22, 30, 50, 0.8);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(245,197,24,0.1);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 24px;
-            border: 1px solid rgba(245,197,24,0.15);
-            transition: all 0.4s ease;
-            position: relative;
-            z-index: 2;
-        }
-
-        .feature-card:hover .feature-icon {
-            background: rgba(245,197,24,0.15);
-            transform: scale(1.1) rotate(-5deg);
-            box-shadow: 0 0 20px rgba(245,197,24,0.1);
-        }
-
-        .feature-card h3 {
-            font-family: 'Space Grotesk', sans-serif;
             font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-            position: relative;
-            z-index: 2;
+            margin-bottom: 16px;
+            border: 1px solid rgba(245,197,24,0.15);
         }
 
-        .feature-card p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.7;
-            position: relative;
-            z-index: 2;
+        .card h3 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        
+        .card p {
+            color: #9aa5b8;
+            font-size: 0.9rem;
+            line-height: 1.6;
         }
 
-        /* Two Column */
+        /* ===== TWO COL ===== */
         .two-col {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 80px;
+            gap: 64px;
             align-items: center;
         }
+        
+        .two-col.reverse { direction: rtl; }
+        .two-col.reverse > * { direction: ltr; }
 
-        .two-col.reverse {
-            direction: rtl;
-        }
-
-        .two-col.reverse > * {
-            direction: ltr;
-        }
-
-        .col-content h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2rem, 3.5vw, 2.8rem);
-            font-weight: 800;
-            margin-bottom: 28px;
+        .two-col h2 {
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            font-weight: 900;
+            margin-bottom: 20px;
             line-height: 1.15;
-            letter-spacing: -0.02em;
         }
-
-        .col-content .lead {
-            font-size: 1.15rem;
-            color: var(--text-secondary);
-            margin-bottom: 36px;
+        
+        .two-col .lead {
+            color: #9aa5b8;
+            font-size: 1.05rem;
+            margin-bottom: 24px;
             line-height: 1.7;
         }
 
-        .check-list {
+        .checklist {
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 18px;
-        }
-
-        .check-list li {
-            display: flex;
-            align-items: flex-start;
             gap: 14px;
-            color: var(--text-secondary);
-            font-size: 1rem;
-            transition: all 0.3s ease;
         }
-
-        .check-list li:hover {
-            color: var(--text-primary);
-            transform: translateX(4px);
+        
+        .checklist li {
+            display: flex;
+            gap: 12px;
+            color: #9aa5b8;
+            font-size: 0.95rem;
+            align-items: flex-start;
         }
-
-        .check-list li::before {
+        
+        .checklist li::before {
             content: '✓';
-            width: 26px;
-            height: 26px;
-            min-width: 26px;
+            min-width: 22px;
+            height: 22px;
             background: rgba(245,197,24,0.12);
-            color: var(--accent-gold);
+            color: #f5c518;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.85rem;
-            font-weight: 700;
-            margin-top: 2px;
-            border: 1px solid rgba(245,197,24,0.2);
-            transition: all 0.3s ease;
-        }
-
-        .check-list li:hover::before {
-            background: rgba(245,197,24,0.2);
-            transform: scale(1.1);
-        }
-
-        .col-visual {
-            position: relative;
+            font-size: 0.75rem;
+            font-weight: 800;
+            margin-top: 1px;
         }
 
         .visual-box {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 48px;
-            position: relative;
-            overflow: hidden;
+            background: rgba(16, 22, 36, 0.6);
+            border: 1px solid rgba(245, 197, 24, 0.08);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
         }
 
-        .visual-box::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
+        .big-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f5c518, #ffd700);
+            color: #0a1628;
+            padding: 32px 48px;
+            border-radius: 20px;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .big-badge .num {
+            font-size: 5rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+        
+        .big-badge .txt {
+            font-size: 1rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .big-badge .sub {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            font-weight: 700;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* City image */
+        .city-img {
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            height: 350px;
+            border: 1px solid rgba(245, 197, 24, 0.08);
+        }
+        
+        .city-img img {
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(245,197,24,0.05) 0%, transparent 70%);
+            object-fit: cover;
+            filter: brightness(0.4) saturate(0.6);
         }
-
-        .percentage-badge {
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            background: var(--gradient-gold);
-            color: var(--accent-navy);
-            padding: 48px 64px;
-            border-radius: 24px;
-            text-align: center;
-            animation: float 5s ease-in-out infinite;
-            box-shadow: 0 20px 50px rgba(245,197,24,0.25), 0 0 0 1px rgba(245,197,24,0.2);
-            position: relative;
-            z-index: 2;
+        
+        .city-img .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 32px;
+            background: linear-gradient(transparent, rgba(10,14,23,0.95));
         }
-
-        .percentage-badge .number {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 6rem;
-            font-weight: 800;
-            line-height: 1;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.15);
-        }
-
-        .percentage-badge .label {
-            font-size: 1.1rem;
-            font-weight: 800;
-            margin-top: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-        }
-
-        .percentage-badge .sublabel {
-            font-size: 0.95rem;
-            opacity: 0.8;
-            margin-top: 6px;
-            font-weight: 600;
-        }
+        
+        .city-img h3 { font-size: 1.4rem; font-weight: 900; }
+        .city-img p { color: #9aa5b8; font-size: 0.9rem; }
 
         /* Steps */
-        .steps-grid {
+        .steps {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 32px;
-            margin-top: 56px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
         }
-
-        .step-card {
+        
+        .step {
             text-align: center;
-            position: relative;
-            padding: 24px;
+            padding: 16px;
         }
-
-        .step-card:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            top: 40px;
-            right: -20px;
-            width: 40px;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent-gold-dark), transparent);
-            opacity: 0.4;
-        }
-
-        .step-number {
-            width: 64px;
-            height: 64px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
+        
+        .step-num {
+            width: 56px;
+            height: 56px;
             border: 2px solid rgba(245,197,24,0.3);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--accent-gold);
-            margin: 0 auto 24px;
-            position: relative;
-            z-index: 2;
-            transition: all 0.4s ease;
-            box-shadow: 0 0 20px rgba(245,197,24,0.1);
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #f5c518;
+            margin: 0 auto 16px;
+            background: rgba(16, 22, 36, 0.6);
         }
-
-        .step-card:hover .step-number {
-            background: var(--accent-gold);
-            color: var(--accent-navy);
-            box-shadow: 0 0 30px rgba(245,197,24,0.3);
-            transform: scale(1.1);
-        }
-
-        .step-card h4 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .step-card p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
+        
+        .step h4 { font-size: 1rem; font-weight: 800; margin-bottom: 6px; }
+        .step p { color: #9aa5b8; font-size: 0.85rem; }
 
         /* FAQ */
-        .faq-list {
-            max-width: 800px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
         .faq-item {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
+            background: rgba(16, 22, 36, 0.6);
+            border: 1px solid rgba(245, 197, 24, 0.08);
+            border-radius: 12px;
+            margin-bottom: 12px;
             overflow: hidden;
-            transition: all 0.4s ease;
         }
-
-        .faq-item:hover {
-            border-color: rgba(245,197,24,0.15);
-        }
-
-        .faq-item.active {
-            border-color: rgba(245,197,24,0.2);
-            background: var(--bg-card-hover);
-        }
-
-        .faq-question {
+        
+        .faq-q {
             width: 100%;
-            padding: 28px 36px;
+            padding: 20px 24px;
             background: none;
             border: none;
-            color: var(--text-primary);
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 600;
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
             text-align: left;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.3s ease;
         }
-
-        .faq-question:hover {
-            color: var(--accent-gold);
-        }
-
-        .faq-question .icon {
-            width: 28px;
-            height: 28px;
-            min-width: 28px;
-            border: 2px solid var(--text-muted);
+        
+        .faq-q:hover { color: #f5c518; }
+        
+        .faq-icon {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #5a6270;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
-            transition: all 0.4s ease;
-            margin-left: 16px;
+            font-size: 0.7rem;
+            transition: all 0.3s;
+            flex-shrink: 0;
+            margin-left: 12px;
         }
-
-        .faq-item.active .faq-question .icon {
+        
+        .faq-item.active .faq-icon {
             transform: rotate(180deg);
-            border-color: var(--accent-gold);
-            color: var(--accent-gold);
-            background: rgba(245,197,24,0.1);
+            border-color: #f5c518;
+            color: #f5c518;
         }
-
-        .faq-answer {
+        
+        .faq-a {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1), padding 0.5s ease;
+            transition: max-height 0.4s ease;
         }
-
-        .faq-item.active .faq-answer {
-            max-height: 300px;
-        }
-
-        .faq-answer-inner {
-            padding: 0 36px 28px;
-            color: var(--text-secondary);
-            line-height: 1.7;
-            font-size: 1rem;
+        
+        .faq-item.active .faq-a { max-height: 200px; }
+        
+        .faq-a-inner {
+            padding: 0 24px 20px;
+            color: #9aa5b8;
+            line-height: 1.6;
         }
 
         /* Form */
-        .form-section {
-            background: var(--glass-bg);
-            backdrop-filter: blur(30px);
-            border: 1px solid var(--glass-border);
-            border-radius: 28px;
-            padding: 64px 56px;
-            max-width: 720px;
+        .form-box {
+            background: rgba(16, 22, 36, 0.6);
+            border: 1px solid rgba(245, 197, 24, 0.08);
+            border-radius: 24px;
+            padding: 48px;
+            max-width: 680px;
             margin: 0 auto;
             position: relative;
-            overflow: hidden;
         }
-
-        .form-section::before {
+        
+        .form-box::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             height: 3px;
-            background: var(--gradient-gold);
+            background: linear-gradient(90deg, #f5c518, #ffd700);
+            border-radius: 24px 24px 0 0;
         }
 
-        .form-group {
-            margin-bottom: 28px;
-        }
-
+        .form-group { margin-bottom: 20px; }
+        
         .form-group label {
             display: block;
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
         }
-
+        
         .form-group input,
-        .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 16px 20px;
-            background: rgba(8, 11, 18, 0.6);
+            padding: 14px 16px;
+            background: rgba(10, 14, 23, 0.8);
             border: 1.5px solid rgba(255,255,255,0.08);
-            border-radius: 12px;
-            color: var(--text-primary);
+            border-radius: 10px;
+            color: white;
             font-size: 1rem;
             font-family: inherit;
-            transition: all 0.3s ease;
         }
-
+        
         .form-group input:focus,
-        .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: var(--accent-gold);
-            box-shadow: 0 0 0 4px rgba(245,197,24,0.08), 0 0 20px rgba(245,197,24,0.05);
-            background: rgba(8, 11, 18, 0.8);
+            border-color: #f5c518;
         }
+        
+        .form-group input::placeholder { color: #5a6270; }
 
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
-            color: var(--text-muted);
-        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .radio-group {
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-        }
-
+        .radio-group { display: flex; gap: 12px; flex-wrap: wrap; }
+        
         .radio-label {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 14px 24px;
-            background: rgba(8, 11, 18, 0.5);
+            gap: 8px;
+            padding: 12px 20px;
+            background: rgba(10, 14, 23, 0.6);
             border: 1.5px solid rgba(255,255,255,0.08);
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
-
-        .radio-label:hover {
-            border-color: rgba(245,197,24,0.3);
-            background: rgba(245,197,24,0.03);
-        }
-
-        .radio-label input[type="radio"] {
-            width: auto;
-            accent-color: var(--accent-gold);
-        }
-
+        
         .radio-label:has(input:checked) {
-            border-color: var(--accent-gold);
+            border-color: #f5c518;
             background: rgba(245,197,24,0.08);
-            box-shadow: 0 0 15px rgba(245,197,24,0.08);
         }
 
         /* Footer CTA */
         .footer-cta {
             text-align: center;
-            padding: 140px 24px;
-            position: relative;
-            overflow: hidden;
+            padding: 100px 24px;
+            background: radial-gradient(ellipse at 50% 50%, rgba(245,197,24,0.05) 0%, transparent 60%);
         }
-
-        .footer-cta::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(ellipse at 50% 50%, rgba(245,197,24,0.06) 0%, transparent 60%),
-                radial-gradient(ellipse at 30% 70%, rgba(10,22,40,0.15) 0%, transparent 50%);
-        }
-
+        
         .footer-cta h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2.2rem, 4.5vw, 3.5rem);
-            font-weight: 800;
-            margin-bottom: 24px;
-            position: relative;
-            z-index: 2;
-            letter-spacing: -0.02em;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 900;
+            margin-bottom: 16px;
         }
-
+        
         .footer-cta p {
-            color: var(--text-secondary);
-            font-size: 1.25rem;
-            max-width: 600px;
-            margin: 0 auto 48px;
-            position: relative;
-            z-index: 2;
-            line-height: 1.6;
+            color: #9aa5b8;
+            font-size: 1.1rem;
+            margin-bottom: 32px;
         }
 
         /* Footer */
         .footer {
-            border-top: 1px solid var(--glass-border);
-            padding: 56px 24px;
+            border-top: 1px solid rgba(245, 197, 24, 0.08);
+            padding: 40px 24px;
             text-align: center;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            background: linear-gradient(180deg, transparent 0%, rgba(8,11,18,0.5) 100%);
+            color: #5a6270;
+            font-size: 0.85rem;
         }
+        
+        .footer .logo { display: inline-flex; margin-bottom: 12px; }
+        .footer .logo-top { font-size: 1.8rem; }
+        .footer .logo-bottom { font-size: 0.55rem; letter-spacing: 3px; }
 
-        .footer p {
-            margin-top: 16px;
-        }
-
-        /* Mobile Menu */
+        /* Mobile */
         .mobile-menu {
             display: none;
             position: fixed;
-            top: 72px;
+            top: 64px;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(8, 11, 18, 0.98);
-            backdrop-filter: blur(30px);
-            z-index: 999;
-            padding: 40px 24px;
+            background: #0a0e17;
+            padding: 32px 24px;
             flex-direction: column;
-            gap: 28px;
+            gap: 24px;
+            z-index: 999;
         }
-
-        .mobile-menu.active {
-            display: flex;
-        }
-
+        
+        .mobile-menu.active { display: flex; }
+        
         .mobile-menu a {
-            color: var(--text-primary);
+            color: white;
             text-decoration: none;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.3rem;
-            font-weight: 600;
-            padding: 16px 0;
-            border-bottom: 1px solid var(--glass-border);
-            transition: color 0.3s ease;
-        }
-
-        .mobile-menu a:hover {
-            color: var(--accent-gold);
-        }
-
-        /* City Image Block */
-        .city-image-block {
-            border-radius: 24px;
-            overflow: hidden;
-            position: relative;
-            height: 420px;
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
-        }
-
-        .city-image-block img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(0.45) contrast(1.15) saturate(0.6);
-            transition: all 0.8s ease;
-        }
-
-        .city-image-block:hover img {
-            filter: brightness(0.55) contrast(1.15) saturate(0.7);
-            transform: scale(1.03);
-        }
-
-        .city-image-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 48px;
-            background: linear-gradient(transparent 20%, rgba(8,11,18,0.95) 100%);
-        }
-
-        .city-image-overlay h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.8rem;
+            font-size: 1.2rem;
             font-weight: 700;
-            margin-bottom: 10px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
         }
 
-        .city-image-overlay p {
-            color: var(--text-secondary);
-            font-size: 1rem;
-        }
-
-        /* Toast */
-        .toast {
-            position: fixed;
-            bottom: 32px;
-            right: 32px;
-            background: var(--bg-card-solid);
-            border: 1px solid var(--accent-gold);
-            color: var(--text-primary);
-            padding: 18px 28px;
-            border-radius: 14px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 20px rgba(245,197,24,0.1);
-            z-index: 10000;
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            font-weight: 700;
-            font-size: 1rem;
-        }
-
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
-            .nav-links, .nav-cta {
-                display: none;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .two-col {
-                grid-template-columns: 1fr;
-                gap: 48px;
-            }
-
-            .two-col.reverse {
-                direction: ltr;
-            }
-
-            .hero-stats {
-                gap: 32px;
-            }
-
-            .stat-item:not(:last-child)::after {
-                display: none;
-            }
-
-            .stat-number {
-                font-size: 2.5rem;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .steps-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .step-card:not(:last-child)::after {
-                display: none;
-            }
-
-            .form-section {
-                padding: 48px 24px;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .section {
-                padding: 80px 24px;
-            }
-
-            .percentage-badge .number {
-                font-size: 4rem;
-            }
-
-            .percentage-badge {
-                padding: 36px 48px;
-            }
-
-            .logo-brand-large .logo-a2b {
-                font-size: 3rem;
-            }
-
-            .logo-brand-large .logo-taxi {
-                font-size: 0.9rem;
-            }
-
-            .hero h1 {
-                font-size: clamp(2rem, 8vw, 3rem);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-buttons {
-                flex-direction: column;
-                width: 100%;
-                max-width: 300px;
-                margin-left: auto;
-                margin-right: auto;
-            }
-
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .percentage-badge {
-                padding: 28px 36px;
-            }
-
-            .percentage-badge .number {
-                font-size: 3.5rem;
-            }
+            .nav-links, .nav-cta { display: none; }
+            .mobile-btn { display: block; }
+            .two-col { grid-template-columns: 1fr; gap: 40px; }
+            .two-col.reverse { direction: ltr; }
+            .form-row { grid-template-columns: 1fr; }
+            .section { padding: 60px 24px; }
+            .hero-logo .logo-top { font-size: 2.5rem; }
+            .big-badge .num { font-size: 3.5rem; }
+            .stats { gap: 32px; }
+            .hero-btns { flex-direction: column; align-items: center; }
+            .btn { width: 100%; max-width: 280px; text-align: center; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
+    <!-- NAV -->
+    <nav class="navbar">
         <div class="nav-container">
-            <a href="#" class="logo-brand logo-wrapper">
-                <div class="logo-a2b">
-                    <span class="char-a">A</span><span class="char-2">2</span><span class="char-b">B</span>
+            <a href="#" class="logo">
+                <div class="logo-top">
+                    <span class="a">A</span><span class="two">2</span><span class="b">B</span>
                 </div>
-                <div class="logo-taxi">TAXI</div>
-                <div class="logo-swoosh"></div>
+                <div class="logo-bottom">TAXI</div>
             </a>
             <ul class="nav-links">
                 <li><a href="#drivers">Водителям</a></li>
                 <li><a href="#passengers">Пассажирам</a></li>
                 <li><a href="#model">Модель</a></li>
-                <li><a href="#standards">Стандарты</a></li>
                 <li><a href="#faq">FAQ</a></li>
             </ul>
             <a href="#form" class="nav-cta">Оставить заявку</a>
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <button class="mobile-btn" onclick="document.getElementById('mobileMenu').classList.toggle('active')">☰</button>
         </div>
     </nav>
 
     <div class="mobile-menu" id="mobileMenu">
-        <a href="#drivers" onclick="toggleMobileMenu()">Водителям</a>
-        <a href="#passengers" onclick="toggleMobileMenu()">Пассажирам</a>
-        <a href="#model" onclick="toggleMobileMenu()">Модель</a>
-        <a href="#standards" onclick="toggleMobileMenu()">Стандарты</a>
-        <a href="#faq" onclick="toggleMobileMenu()">FAQ</a>
-        <a href="#form" onclick="toggleMobileMenu()">Оставить заявку</a>
+        <a href="#drivers" onclick="document.getElementById('mobileMenu').classList.remove('active')">Водителям</a>
+        <a href="#passengers" onclick="document.getElementById('mobileMenu').classList.remove('active')">Пассажирам</a>
+        <a href="#model" onclick="document.getElementById('mobileMenu').classList.remove('active')">Модель</a>
+        <a href="#faq" onclick="document.getElementById('mobileMenu').classList.remove('active')">FAQ</a>
+        <a href="#form" onclick="document.getElementById('mobileMenu').classList.remove('active')">Оставить заявку</a>
     </div>
 
-    <!-- Hero Section -->
-    <section class="hero" id="hero">
-        <div class="hero-bg"></div>
-        <div class="hero-city-overlay"></div>
-        <div class="hero-grid"></div>
-        <div class="hero-particles" id="particles"></div>
-        <div class="glow-orb glow-orb-1"></div>
-        <div class="glow-orb glow-orb-2"></div>
+    <!-- HERO -->
+    <section class="hero">
         <div class="hero-content">
-            <div class="hero-logo-large">
-                <a href="#" class="logo-brand logo-brand-large logo-wrapper">
-                    <div class="logo-a2b">
-                        <span class="char-a">A</span><span class="char-2">2</span><span class="char-b">B</span>
-                    </div>
-                    <div class="logo-taxi">TAXI</div>
-                    <div class="logo-swoosh"></div>
-                </a>
+            <div class="hero-logo logo">
+                <div class="logo-top">
+                    <span class="a">A</span><span class="two">2</span><span class="b">B</span>
+                </div>
+                <div class="logo-bottom">TAXI</div>
             </div>
-            <div class="hero-badge">
-                <span></span>
+            <div class="badge">
+                <span class="badge-dot"></span>
                 Скоро запуск в Даугавпилсе
             </div>
             <h1>
                 Локальное такси, где водители<br>
-                <span class="highlight">зарабатывают больше</span>,<br>
+                <span>зарабатывают больше</span>,<br>
                 а пассажиры едут комфортнее
             </h1>
-            <p class="hero-subtitle">
-                Новый стандарт городского такси с человеческим подходом. Комиссия для водителей — всего <strong style="color: var(--accent-gold);">10%</strong>, плюс поддержка с бухгалтерией, оформлением и повышением дохода.
+            <p>
+                Новый стандарт городского такси с человеческим подходом. Комиссия для водителей — всего <strong style="color:#f5c518">10%</strong>, плюс поддержка с бухгалтерией, оформлением и повышением дохода.
             </p>
-            <div class="hero-buttons">
-                <a href="#form" class="btn btn-primary" onclick="setRole('driver')">
-                    Стать водителем
-                </a>
-                <a href="#passengers" class="btn btn-secondary">
-                    Заказать поездку
-                </a>
-                <a href="#form" class="btn btn-secondary" onclick="setRole('passenger')">
-                    Узнать о запуске
-                </a>
+            <div class="hero-btns">
+                <a href="#form" class="btn btn-gold" onclick="setRole('driver')">Стать водителем</a>
+                <a href="#passengers" class="btn btn-outline">Заказать поездку</a>
+                <a href="#form" class="btn btn-outline" onclick="setRole('passenger')">Узнать о запуске</a>
             </div>
-            <div class="hero-stats">
-                <div class="stat-item">
-                    <div class="stat-number">10%</div>
-                    <div class="stat-label">Комиссия сервиса</div>
+            <div class="stats">
+                <div class="stat">
+                    <h3>10%</h3>
+                    <p>Комиссия сервиса</p>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">24/7</div>
-                    <div class="stat-label">Поддержка водителей</div>
+                <div class="stat">
+                    <h3>24/7</h3>
+                    <p>Поддержка водителей</p>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">100%</div>
-                    <div class="stat-label">Локальный подход</div>
+                <div class="stat">
+                    <h3>100%</h3>
+                    <p>Локальный подход</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <div class="section-divider"></div>
-
-    <!-- Drivers Section -->
-    <section class="section section-alt" id="drivers">
-        <div class="glow-orb" style="right: auto; left: -150px; top: 10%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(245,197,24,0.06) 0%, transparent 70%);"></div>
-        <div class="container">
-            <div class="two-col animate-on-scroll">
-                <div class="col-content">
-                    <span class="section-label">Для водителей</span>
-                    <h2>Больше денег<br>остаётся у вас</h2>
-                    <p class="lead">
-                        Мы строим систему, где водитель не остаётся один на один с приложением. Наша задача — дать заказы, поддержку и понятные инструменты, чтобы водитель мог работать стабильнее, комфортнее и прибыльнее.
-                    </p>
-                    <ul class="check-list">
-                        <li>Комиссия сервиса всего <strong style="color: var(--accent-gold);">10%</strong> — вместо 24% у крупных агрегаторов</li>
-                        <li>Помощь с бухгалтерией и оформлением</li>
-                        <li>Консультации по легальной налоговой оптимизации</li>
-                        <li>Поддержка при регистрации и начале работы</li>
-                        <li>Помощь в снижении операционных расходов</li>
-                        <li>Возможность зарабатывать больше за счёт высокого стандарта сервиса</li>
-                        <li>Доступ к инструментам для премиального обслуживания</li>
-                    </ul>
-                    <br>
-                    <a href="#form" class="btn btn-primary" onclick="setRole('driver')" style="margin-top: 20px;">
-                        Подать заявку водителя
-                    </a>
+    <!-- DRIVERS -->
+    <section class="section section-gray" id="drivers">
+        <div class="two-col">
+            <div>
+                <span class="section-label">Для водителей</span>
+                <h2>Больше денег<br>остаётся у вас</h2>
+                <p class="lead">
+                    Мы строим систему, где водитель не остаётся один на один с приложением. Наша задача — дать заказы, поддержку и понятные инструменты.
+                </p>
+                <ul class="checklist">
+                    <li>Комиссия сервиса всего <strong style="color:#f5c518">10%</strong> — вместо 24%</li>
+                    <li>Помощь с бухгалтерией и оформлением</li>
+                    <li>Консультации по легальной налоговой оптимизации</li>
+                    <li>Поддержка при регистрации и начале работы</li>
+                    <li>Помощь в снижении операционных расходов</li>
+                    <li>Доступ к инструментам для премиального обслуживания</li>
+                </ul>
+                <br>
+                <a href="#form" class="btn btn-gold" onclick="setRole('driver')">Подать заявку водителя</a>
+            </div>
+            <div class="visual-box">
+                <div class="big-badge">
+                    <div class="num">10%</div>
+                    <div class="txt">Комиссия</div>
+                    <div class="sub">вместо 24%</div>
                 </div>
-                <div class="col-visual">
-                    <div class="visual-box" style="text-align: center; padding: 60px 40px;">
-                        <div class="percentage-badge">
-                            <div class="number">10%</div>
-                            <div class="label">Комиссия</div>
-                            <div class="sublabel">вместо 24%</div>
-                        </div>
-                        <p style="margin-top: 36px; color: var(--text-secondary); font-size: 1rem; line-height: 1.7;">
-                            Экономия на каждой поездке. При среднем заработке 2000€ в месяц — вы сохраняете <strong style="color: var(--accent-gold);">280€+</strong> дополнительно.
-                        </p>
-                    </div>
-                </div>
+                <p style="margin-top:24px;color:#9aa5b8;font-size:0.9rem">
+                    При заработке 2000€/мес — вы сохраняете <strong style="color:#f5c518">280€+</strong> дополнительно.
+                </p>
             </div>
         </div>
     </section>
 
-    <div class="section-divider"></div>
-
-    <!-- Passengers Section -->
+    <!-- PASSENGERS -->
     <section class="section" id="passengers">
-        <div class="container">
-            <div class="two-col reverse animate-on-scroll">
-                <div class="col-visual">
-                    <div class="city-image-block">
-                        <img src="https://kimi-web-img.moonshot.cn/img/www.daugavpils.lv/439e25510e1c86c2309bef9f0d0b3ba3ee456234.jpg" alt="Даугавпилс ночью">
-                        <div class="city-image-overlay">
-                            <h3>Даугавпилс</h3>
-                            <p>Город, где такси снова имеет значение</p>
-                        </div>
-                    </div>
+        <div class="two-col reverse">
+            <div class="city-img">
+                <img src="https://kimi-web-img.moonshot.cn/img/www.daugavpils.lv/439e25510e1c86c2309bef9f0d0b3ba3ee456234.jpg" alt="Даугавпилс">
+                <div class="overlay">
+                    <h3>Даугавпилс</h3>
+                    <p>Город, где такси снова имеет значение</p>
                 </div>
-                <div class="col-content">
-                    <span class="section-label">Для пассажиров</span>
-                    <h2>Такси, в которое<br>приятно садиться</h2>
-                    <p class="lead">
-                        Мы хотим вернуть такси статус удобного и приятного городского сервиса. Не просто доехать из точки А в точку Б, а получить нормальный человеческий сервис.
-                    </p>
-                    <ul class="check-list">
-                        <li>Вежливые водители, которые здороваются</li>
-                        <li>Чистый салон и аккуратный внешний вид авто</li>
-                        <li>Комфортная поездка без резких маневров</li>
-                        <li>Чёткие стандарты качества на каждой поездке</li>
-                        <li>Для премиальных поездок: вода, жвачка, приятный аромат, подсветка</li>
-                        <li>Предсказуемое качество — каждый раз</li>
-                    </ul>
-                    <br>
-                    <a href="#form" class="btn btn-primary" onclick="setRole('passenger')" style="margin-top: 20px;">
-                        Получить уведомление о запуске
-                    </a>
-                </div>
+            </div>
+            <div>
+                <span class="section-label">Для пассажиров</span>
+                <h2>Такси, в которое<br>приятно садиться</h2>
+                <p class="lead">
+                    Мы хотим вернуть такси статус удобного и приятного городского сервиса. Не просто доехать из точки А в точку Б.
+                </p>
+                <ul class="checklist">
+                    <li>Вежливые водители, которые здороваются</li>
+                    <li>Чистый салон и аккуратный внешний вид авто</li>
+                    <li>Комфортная поездка без резких маневров</li>
+                    <li>Чёткие стандарты качества на каждой поездке</li>
+                    <li>Для премиальных поездок: вода, жвачка, аромат, подсветка</li>
+                    <li>Предсказуемое качество — каждый раз</li>
+                </ul>
+                <br>
+                <a href="#form" class="btn btn-gold" onclick="setRole('passenger')">Получить уведомление о запуске</a>
             </div>
         </div>
     </section>
 
-    <div class="section-divider"></div>
-
-    <!-- Why Daugavpils -->
-    <section class="section section-alt">
-        <div class="container">
-            <div class="section-header animate-on-scroll">
-                <span class="section-label">Наш старт</span>
-                <h2 class="section-title">Почему мы начинаем<br>с Даугавпилса</h2>
+    <!-- WHY DAUGAVPILS -->
+    <section class="section section-gray">
+        <div class="section-header">
+            <span class="section-label">Наш старт</span>
+            <h2 class="section-title">Почему мы начинаем с Даугавпилса</h2>
+        </div>
+        <div class="cards">
+            <div class="card">
+                <div class="card-icon">🏙️</div>
+                <h3>Идеальный тестовый рынок</h3>
+                <p>Даугавпилс — город с стабильным спросом на такси, активными водителями и потребностью в локальной альтернативе.</p>
             </div>
-            <div class="features-grid animate-on-scroll delay-1">
-                <div class="feature-card">
-                    <div class="feature-icon">🏙️</div>
-                    <h3>Идеальный тестовый рынок</h3>
-                    <p>Даугавпилс — город с стабильным спросом на такси, активными водителями и потребностью в более удобной локальной альтернативе крупным агрегаторам.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎯</div>
-                    <h3>Отработка модели</h3>
-                    <p>Мы начинаем с одного города, чтобы отработать качество, систему и экономику, а затем масштабировать модель в другие города Прибалтики.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🤝</div>
-                    <h3>Локальная поддержка</h3>
-                    <p>Мы знаем город, его особенности и потребности. Персональный подход к каждому водителю и пассажиру — наш главный принцип.</p>
-                </div>
+            <div class="card">
+                <div class="card-icon">🎯</div>
+                <h3>Отработка модели</h3>
+                <p>Мы начинаем с одного города, чтобы отработать качество и экономику, а затем масштабировать в другие города Прибалтики.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🤝</div>
+                <h3>Локальная поддержка</h3>
+                <p>Персональный подход к каждому водителю и пассажиру — наш главный принцип.</p>
             </div>
         </div>
     </section>
 
-    <div class="section-divider"></div>
-
-    <!-- Business Model -->
+    <!-- MODEL -->
     <section class="section" id="model">
-        <div class="glow-orb" style="bottom: auto; top: 5%; left: -100px; width: 350px; height: 350px; background: radial-gradient(circle, rgba(10,22,40,0.2) 0%, transparent 70%);"></div>
-        <div class="container">
-            <div class="section-header animate-on-scroll">
-                <span class="section-label">Экономика сервиса</span>
-                <h2 class="section-title">Мы зарабатываем<br>не только на комиссии</h2>
-                <p class="section-subtitle">
-                    Сервис строится как экосистема. Комиссия с поездок — только одно направление. Дополнительно мы развиваем сервисы, напрямую связанные с работой такси.
-                </p>
+        <div class="section-header">
+            <span class="section-label">Экономика сервиса</span>
+            <h2 class="section-title">Мы зарабатываем не только на комиссии</h2>
+            <p class="section-subtitle">
+                Сервис строится как экосистема. Комиссия с поездок — только одно направление.
+            </p>
+        </div>
+        <div class="cards">
+            <div class="card">
+                <div class="card-icon">📊</div>
+                <h3>Бухгалтерская поддержка</h3>
+                <p>Помощь с оформлением, консультации и снижение операционных издержек.</p>
             </div>
-            <div class="features-grid animate-on-scroll delay-1">
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>Бухгалтерская поддержка</h3>
-                    <p>Помощь с оформлением, консультации и снижение операционных издержек для водителей.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🚗</div>
-                    <h3>Оборудование и аксессуары</h3>
-                    <p>Стандарты качества, оборудование и аксессуары для автомобилей — всё для премиального обслуживания.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📈</div>
-                    <h3>Инструменты роста дохода</h3>
-                    <p>Консультации и инструменты для повышения дохода водителей через улучшение сервиса.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">💡</div>
-                    <h3>Низкая комиссия = больше пользы</h3>
-                    <p>Это позволяет нам делать комиссию ниже, а водителям — получать больше пользы от платформы.</p>
-                </div>
+            <div class="card">
+                <div class="card-icon">🚗</div>
+                <h3>Оборудование и аксессуары</h3>
+                <p>Стандарты качества, оборудование и аксессуары для премиального обслуживания.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📈</div>
+                <h3>Инструменты роста дохода</h3>
+                <p>Консультации и инструменты для повышения дохода водителей.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">💡</div>
+                <h3>Низкая комиссия = больше пользы</h3>
+                <p>Это позволяет нам делать комиссию ниже, а водителям — получать больше пользы.</p>
             </div>
         </div>
     </section>
 
-    <div class="section-divider"></div>
-
-    <!-- Standards -->
-    <section class="section section-alt" id="standards">
-        <div class="container">
-            <div class="section-header animate-on-scroll">
-                <span class="section-label">Качество</span>
-                <h2 class="section-title">Новый стандарт<br>городского такси</h2>
+    <!-- STANDARDS -->
+    <section class="section section-gray" id="standards">
+        <div class="section-header">
+            <span class="section-label">Качество</span>
+            <h2 class="section-title">Новый стандарт городского такси</h2>
+        </div>
+        <div class="cards">
+            <div class="card">
+                <div class="card-icon">👋</div>
+                <h3>Водитель здоровается</h3>
+                <p>Простой, но важный жест вежливости, который задаёт тон всей поездке.</p>
             </div>
-            <div class="features-grid animate-on-scroll delay-1">
-                <div class="feature-card">
-                    <div class="feature-icon">👋</div>
-                    <h3>Водитель здоровается</h3>
-                    <p>Простой, но важный жест вежливости, который задаёт тон всей поездке.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">✨</div>
-                    <h3>Чистый автомобиль</h3>
-                    <p>Автомобиль чистый внутри и снаружи. В салоне нет неприятных запахов.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🛡️</div>
-                    <h3>Аккуратное вождение</h3>
-                    <p>Водитель соблюдает аккуратный стиль вождения. Пассажиру комфортно и безопасно.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🌟</div>
-                    <h3>Премиальные поездки</h3>
-                    <p>Для повышенного уровня: вода, жвачка, приятный аромат, подсветка, чистые коврики.</p>
-                </div>
+            <div class="card">
+                <div class="card-icon">✨</div>
+                <h3>Чистый автомобиль</h3>
+                <p>Автомобиль чистый внутри и снаружи. В салоне нет неприятных запахов.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🛡️</div>
+                <h3>Аккуратное вождение</h3>
+                <p>Водитель соблюдает аккуратный стиль вождения. Пассажиру комфортно и безопасно.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🌟</div>
+                <h3>Премиальные поездки</h3>
+                <p>Для повышенного уровня: вода, жвачка, приятный аромат, подсветка, чистые коврики.</p>
             </div>
         </div>
     </section>
 
-    <div class="section-divider"></div>
-
-    <!-- Steps for Drivers -->
+    <!-- STEPS -->
     <section class="section">
-        <div class="container">
-            <div class="section-header animate-on-scroll">
-                <span class="section-label">Как начать</span>
-                <h2 class="section-title">Для водителей:<br>пять простых шагов</h2>
+        <div class="section-header">
+            <span class="section-label">Как начать</span>
+            <h2 class="section-title">Для водителей: пять простых шагов</h2>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">1</div>
+                <h4>Оставьте заявку</h4>
+                <p>Заполните простую форму на сайте</p>
             </div>
-            <div class="steps-grid animate-on-scroll delay-1">
-                <div class="step-card">
-                    <div class="step-number">1</div>
-                    <h4>Оставьте заявку</h4>
-                    <p>Заполните простую форму на сайте — это займёт меньше минуты</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">2</div>
-                    <h4>Мы свяжемся</h4>
-                    <p>Перезвоним или напишем в удобный мессенджер для уточнения деталей</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">3</div>
-                    <h4>Помощь с оформлением</h4>
-                    <p>Поможем с регистрацией, документами и подключением к системе</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">4</div>
-                    <h4>Настройка профиля</h4>
-                    <p>Настроим профиль, объясним стандарты и подготовим к работе</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">5</div>
-                    <h4>Первые заказы</h4>
-                    <p>Вы начинаете получать заказы и зарабатывать больше с комиссией 10%</p>
-                </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <h4>Мы свяжемся</h4>
+                <p>Перезвоним или напишем для уточнения</p>
             </div>
-            <div style="text-align: center; margin-top: 56px;">
-                <a href="#form" class="btn btn-primary" onclick="setRole('driver')">
-                    Подать заявку водителя
-                </a>
+            <div class="step">
+                <div class="step-num">3</div>
+                <h4>Помощь с оформлением</h4>
+                <p>Поможем с регистрацией и документами</p>
             </div>
+            <div class="step">
+                <div class="step-num">4</div>
+                <h4>Настройка профиля</h4>
+                <p>Объясним стандарты и подготовим к работе</p>
+            </div>
+            <div class="step">
+                <div class="step-num">5</div>
+                <h4>Первые заказы</h4>
+                <p>Начните зарабатывать больше с комиссией 10%</p>
+            </div>
+        </div>
+        <div style="text-align:center;margin-top:40px">
+            <a href="#form" class="btn btn-gold" onclick="setRole('driver')">Подать заявку водителя</a>
         </div>
     </section>
 
-    <div class="section-divider"></div>
-
-    <!-- For Passengers CTA -->
-    <section class="section section-alt">
-        <div class="container">
-            <div class="section-header animate-on-scroll">
-                <span class="section-label">Скоро</span>
-                <h2 class="section-title">Для пассажиров</h2>
-                <p class="section-subtitle">
-                    Сервис готовится к запуску в Даугавпилсе. Оставьте номер или email, чтобы получить уведомление о старте, бонус на первую поездку или ранний доступ.
-                </p>
-            </div>
-            <div style="text-align: center;">
-                <a href="#form" class="btn btn-primary" onclick="setRole('passenger')">
-                    Получить уведомление о запуске
-                </a>
-            </div>
+    <!-- PASSENGERS CTA -->
+    <section class="section section-gray">
+        <div class="section-header">
+            <span class="section-label">Скоро</span>
+            <h2 class="section-title">Для пассажиров</h2>
+            <p class="section-subtitle">
+                Сервис готовится к запуску в Даугавпилсе. Оставьте номер, чтобы получить уведомление о старте и бонус на первую поездку.
+            </p>
+        </div>
+        <div style="text-align:center">
+            <a href="#form" class="btn btn-gold" onclick="setRole('passenger')">Получить уведомление о запуске</a>
         </div>
     </section>
-
-    <div class="section-divider"></div>
 
     <!-- FAQ -->
     <section class="section" id="faq">
-        <div class="container">
-            <div class="section-header animate-on-scroll">
-                <span class="section-label">Вопросы и ответы</span>
-                <h2 class="section-title">Часто задаваемые<br>вопросы</h2>
+        <div class="section-header">
+            <span class="section-label">Вопросы и ответы</span>
+            <h2 class="section-title">Часто задаваемые вопросы</h2>
+        </div>
+        <div style="max-width:800px;margin:0 auto">
+            <div class="faq-item">
+                <button class="faq-q" onclick="this.parentElement.classList.toggle('active')">
+                    Какая комиссия для водителей?
+                    <span class="faq-icon">▼</span>
+                </button>
+                <div class="faq-a"><div class="faq-a-inner">Комиссия сервиса — <strong style="color:#f5c518">10%</strong>. Это значительно ниже, чем у крупных агрегаторов, где комиссия часто достигает 24% и выше.</div></div>
             </div>
-            <div class="faq-list animate-on-scroll delay-1">
-                <div class="faq-item">
-                    <button class="faq-question" onclick="toggleFaq(this)">
-                        Какая комиссия для водителей?
-                        <span class="icon">▼</span>
-                    </button>
-                    <div class="faq-answer">
-                        <div class="faq-answer-inner">
-                            Комиссия сервиса — <strong style="color: var(--accent-gold);">10%</strong>. Это значительно ниже, чем у крупных агрегаторов, где комиссия часто достигает 24% и выше.
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question" onclick="toggleFaq(this)">
-                        Помогаете ли вы с бухгалтерией?
-                        <span class="icon">▼</span>
-                    </button>
-                    <div class="faq-answer">
-                        <div class="faq-answer-inner">
-                            Да, мы предоставляем водителям поддержку и консультации по вопросам оформления, бухгалтерии и легальной оптимизации расходов.
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question" onclick="toggleFaq(this)">
-                        Можно ли подключиться, если я уже работаю в такси?
-                        <span class="icon">▼</span>
-                    </button>
-                    <div class="faq-answer">
-                        <div class="faq-answer-inner">
-                            Да, вы можете оставить заявку, и мы обсудим условия подключения. Многие водители совмещают работу в нескольких сервисах.
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question" onclick="toggleFaq(this)">
-                        Когда сервис запустится?
-                        <span class="icon">▼</span>
-                    </button>
-                    <div class="faq-answer">
-                        <div class="faq-answer-inner">
-                            Сначала мы формируем базу водителей и пассажиров в Даугавпилсе. После этого будет объявлена дата запуска. Оставьте заявку, чтобы быть в числе первых.
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question" onclick="toggleFaq(this)">
-                        Будет ли приложение?
-                        <span class="icon">▼</span>
-                    </button>
-                    <div class="faq-answer">
-                        <div class="faq-answer-inner">
-                            Да, модель предполагает приложение или удобную цифровую систему для заказа поездок и работы водителей. Мы сообщим о доступности приложения всем зарегистрированным пользователям.
-                        </div>
-                    </div>
-                </div>
+            <div class="faq-item">
+                <button class="faq-q" onclick="this.parentElement.classList.toggle('active')">
+                    Помогаете ли вы с бухгалтерией?
+                    <span class="faq-icon">▼</span>
+                </button>
+                <div class="faq-a"><div class="faq-a-inner">Да, мы предоставляем водителям поддержку и консультации по вопросам оформления, бухгалтерии и легальной оптимизации расходов.</div></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q" onclick="this.parentElement.classList.toggle('active')">
+                    Можно ли подключиться, если я уже работаю в такси?
+                    <span class="faq-icon">▼</span>
+                </button>
+                <div class="faq-a"><div class="faq-a-inner">Да, вы можете оставить заявку, и мы обсудим условия подключения. Многие водители совмещают работу в нескольких сервисах.</div></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q" onclick="this.parentElement.classList.toggle('active')">
+                    Когда сервис запустится?
+                    <span class="faq-icon">▼</span>
+                </button>
+                <div class="faq-a"><div class="faq-a-inner">Сначала мы формируем базу водителей и пассажиров в Даугавпилсе. После этого будет объявлена дата запуска. Оставьте заявку, чтобы быть в числе первых.</div></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q" onclick="this.parentElement.classList.toggle('active')">
+                    Будет ли приложение?
+                    <span class="faq-icon">▼</span>
+                </button>
+                <div class="faq-a"><div class="faq-a-inner">Да, модель предполагает приложение или удобную цифровую систему для заказа поездок и работы водителей.</div></div>
             </div>
         </div>
     </section>
 
-    <div class="section-divider"></div>
-
-    <!-- Form Section -->
-    <section class="section section-alt" id="form">
-        <div class="container">
-            <div class="section-header animate-on-scroll">
-                <span class="section-label">Заявка</span>
-                <h2 class="section-title">Оставьте заявку</h2>
-                <p class="section-subtitle">
-                    Станьте частью нового такси в Даугавпилсе. Мы свяжемся с вами в ближайшее время.
-                </p>
-            </div>
-            <div class="form-section animate-on-scroll delay-1">
-                <form id="leadForm" onsubmit="handleSubmit(event)">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="name">Имя</label>
-                            <input type="text" id="name" name="name" placeholder="Ваше имя" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Телефон</label>
-                            <input type="tel" id="phone" name="phone" placeholder="+371 28 000 000" required>
-                        </div>
-                    </div>
-                    
+    <!-- FORM -->
+    <section class="section section-gray" id="form">
+        <div class="section-header">
+            <span class="section-label">Заявка</span>
+            <h2 class="section-title">Оставьте заявку</h2>
+            <p class="section-subtitle">Станьте частью нового такси в Даугавпилсе. Мы свяжемся с вами в ближайшее время.</p>
+        </div>
+        <div class="form-box">
+            <form onsubmit="event.preventDefault(); alert('Заявка отправлена!'); this.reset();">
+                <div class="form-row">
                     <div class="form-group">
-                        <label>Кто вы?</label>
-                        <div class="radio-group">
-                            <label class="radio-label">
-                                <input type="radio" name="role" value="driver" checked>
-                                Я водитель
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="role" value="passenger">
-                                Я пассажир
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="role" value="partner">
-                                Я партнёр
-                            </label>
-                        </div>
+                        <label>Имя</label>
+                        <input type="text" placeholder="Ваше имя" required>
                     </div>
-
-                    <div class="form-group" id="carGroup">
-                        <label>Есть ли автомобиль?</label>
-                        <div class="radio-group">
-                            <label class="radio-label">
-                                <input type="radio" name="hasCar" value="yes" checked>
-                                Да, есть
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="hasCar" value="no">
-                                Пока нет
-                            </label>
-                        </div>
-                    </div>
-
                     <div class="form-group">
-                        <label for="comment">Комментарий</label>
-                        <textarea id="comment" name="comment" rows="4" placeholder="Расскажите немного о себе или задайте вопрос..."></textarea>
+                        <label>Телефон</label>
+                        <input type="tel" placeholder="+371 28 000 000" required>
                     </div>
-
-                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
-                        Отправить заявку
-                    </button>
-                </form>
-            </div>
+                </div>
+                <div class="form-group">
+                    <label>Кто вы?</label>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="role" value="driver" checked style="margin-right:8px">Я водитель</label>
+                        <label class="radio-label"><input type="radio" name="role" value="passenger" style="margin-right:8px">Я пассажир</label>
+                        <label class="radio-label"><input type="radio" name="role" value="partner" style="margin-right:8px">Я партнёр</label>
+                    </div>
+                </div>
+                <div class="form-group" id="carGroup">
+                    <label>Есть ли автомобиль?</label>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="hasCar" value="yes" checked style="margin-right:8px">Да, есть</label>
+                        <label class="radio-label"><input type="radio" name="hasCar" value="no" style="margin-right:8px">Пока нет</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Комментарий</label>
+                    <textarea rows="3" placeholder="Расскажите немного о себе..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-gold" style="width:100%">Отправить заявку</button>
+            </form>
         </div>
     </section>
 
-    <!-- Final CTA -->
+    <!-- FOOTER CTA -->
     <section class="footer-cta">
-        <div class="container">
-            <h2 class="animate-on-scroll">
-                Станьте частью нового<br>
-                <span class="highlight" style="background: var(--gradient-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">такси в Даугавпилсе</span>
-            </h2>
-            <p class="animate-on-scroll delay-1">
-                Мы создаём сервис, где водителям выгоднее работать, а пассажирам приятнее ездить.
-            </p>
-            <div class="hero-buttons animate-on-scroll delay-2" style="justify-content: center;">
-                <a href="#form" class="btn btn-primary" onclick="setRole('driver')">
-                    Стать водителем
-                </a>
-                <a href="#form" class="btn btn-secondary" onclick="setRole('passenger')">
-                    Следить за запуском
-               
+        <h2>
+            Станьте частью нового<br>
+            <span style="background:linear-gradient(135deg,#f5c518,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent">такси в Даугавпилсе</span>
+        </h2>
+        <p>Мы создаём сервис, где водителям выгоднее работать, а пассажирам приятнее ездить.</p>
+        <div class="hero-btns" style="justify-content:center">
+            <a href="#form" class="btn btn-gold" onclick="setRole('driver')">Стать водителем</a>
+            <a href="#form" class="btn btn-outline" onclick="setRole('passenger')">Следить за запуском</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="logo">
+            <div class="logo-top">
+                <span class="a">A</span><span class="two">2</span><span class="b">B</span>
+            </div>
+            <div class="logo-bottom">TAXI</div>
+        </div>
+        <p>Локальная альтернатива крупным агрегаторам. Даугавпилс, Латвия.</p>
+        <p style="margin-top:4px">© 2026. Новый стандарт городского такси.</p>
+    </footer>
+
+    <script>
+        function setRole(role) {
+            const radios = document.querySelectorAll('input[name="role"]');
+            radios.forEach(r => { if (r.value === role) r.checked = true; });
+            const carGroup = document.getElementById('carGroup');
+            if (carGroup) {
+                carGroup.style.display = (role === 'passenger' || role === 'partner') ? 'none' : 'block';
+            }
+            document.getElementById('form').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        document.querySelectorAll('input[name="role"]').forEach(r => {
+            r.addEventListener('change', function() {
+                const carGroup = document.getElementById('carGroup');
+                if (carGroup) {
+                    carGroup.style.display = (this.value === 'passenger' || this.value === 'partner') ? 'none' : 'block';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
